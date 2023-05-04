@@ -11,6 +11,24 @@ function TweetsContainer() {
     setSelectedUserId(newId)
   }
 
+  const handleLike = (tweetId) => {
+    setUsers(currentUsers => {
+      return currentUsers.map(user => {
+        if (user.id === selectedUserId) {
+          return {...user, tweets: user.tweets.map(tweet => {
+            if (tweet.id === tweetId) {
+              return {...tweet, favorite_count: tweet.favorite_count + 1}
+            } else {
+              return tweet
+            }
+          })}
+        } else {
+          return user
+        }
+      })
+    })
+  }
+
   const currentUser = users.find(user => user.id === selectedUserId)
 
   return (
@@ -22,7 +40,7 @@ function TweetsContainer() {
         </div>
         <div className="ten wide column">
           <h2 className="ui header">Tweets</h2>
-          <TweetList user={currentUser} />
+          <TweetList handleLike={handleLike} user={currentUser} />
         </div>
       </div>
     </div>
